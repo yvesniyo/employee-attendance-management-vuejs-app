@@ -138,12 +138,16 @@ export default {
         .catch((error) => {
           ctx.sending = false;
           bus.$emit("hide-ajax-loader");
+
           if (error.response.status == 422) {
             ctx.formSubmitResponseMessage = error.response.data.message;
             ctx.formSubmitResponseStatus = true;
             Object.keys(error.response.data.errors).forEach(function (key) {
               ctx.$set(ctx.valid, key, error.response.data.errors[key][0]);
             });
+          } else if (error.response.status == 401) {
+            ctx.formSubmitResponseMessage = error.response.data.message;
+            ctx.formSubmitResponseStatus = true;
           } else if (error.response.status == 500) {
             ctx.formSubmitResponseMessage = error.response.data.message;
             ctx.formSubmitResponseStatus = true;

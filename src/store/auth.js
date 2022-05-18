@@ -31,7 +31,7 @@ export default {
         state.user = value.user;
         state.token = value.token;
       } catch (error) {
-        console.log(error);
+        delete error.message;
       }
     },
   },
