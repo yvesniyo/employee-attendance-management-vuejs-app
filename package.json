@@ -1,12 +1,12 @@
 {
-  "name": "coopera-mobile",
+  "name": "employees-management",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "i18n:extract": "./node_modules/.bin/vue-i18n-extract use-config",
+    "i18n:extract": "./node_modules/.bin/vue-i18n-extract --output-path=./src/locale use-config",
     "i18n:report": "vue-cli-service i18n:report --src \"./src/**/*.?(js|vue)\" --locales \"./src/locales/**/*.json\""
   },
   "dependencies": {

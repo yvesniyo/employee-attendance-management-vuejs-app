@@ -20,31 +20,6 @@
             </md-button>
           </div>
         </div>
-
-        <div class="md-toolbar-row">
-          <md-tabs class="md-primary">
-            <md-tab
-              id="tab-home"
-              :to="{ name: 'dashboard' }"
-              md-label="Home"
-            ></md-tab>
-            <md-tab
-              id="tab-pages"
-              :to="{ name: 'all-cooperatives' }"
-              md-label="ASSOC"
-            ></md-tab>
-            <md-tab
-              id="tab-people"
-              :to="{ name: 'all-people' }"
-              md-label="People"
-            ></md-tab>
-            <md-tab
-              id="tab-posts"
-              :to="{ name: 'my-account' }"
-              md-label="Account"
-            ></md-tab>
-          </md-tabs>
-        </div>
       </md-app-toolbar>
 
       <md-app-drawer :md-active.sync="menuVisible">
@@ -85,68 +60,47 @@ export default {
   components: { AjaxLoader },
   name: "dashboard",
   data: () => ({
-    menuVisible: false
+    menuVisible: false,
   }),
   computed: {
     ...mapGetters({
       authenticated: "auth/authenticated",
-      user: "auth/user"
-    })
+      user: "auth/user",
+    }),
   },
   mounted() {
     if (this.authenticated) {
-      this.$echo
-        .channel("wallet." + this.user.id)
-        .listen(".topup.success", payload => {
-          this.$notify({
-            title: this.$t("Topup"),
-            message: payload.message,
-            type: "success",
-            duration: 0
-          });
-        });
-
-      this.$echo
-        .channel("wallet." + this.user.id)
-        .listen(".topup.error", payload => {
-          this.$notify({
-            title: this.$t("Topup"),
-            message: payload.message,
-            type: "error",
-            duration: 0
-          });
-        });
     }
   },
   methods: {
     ...mapActions({
-      signOut: "auth/signOut"
+      signOut: "auth/signOut",
     }),
-    logout: function() {
+    logout: function () {
       const loading = this.$loading({
         lock: true,
         text: this.$t("Logging out..."),
         spinner: "el-icon-loading",
-        background: "rgba(0, 0, 0, 0.7)"
+        background: "rgba(0, 0, 0, 0.7)",
       });
 
       this.signOut()
-        .then(data => {
+        .then((data) => {
           loading.close();
           this.$router.replace({ name: "login-register" });
         })
-        .catch(error => {
+        .catch((error) => {
           loading.close();
         });
-    }
+    },
   },
   created() {
     if (!this.authenticated) {
       this.$router.replace({
-        name: "login"
+        name: "login",
       });
     }
-  }
+  },
 };
 </script>
 
