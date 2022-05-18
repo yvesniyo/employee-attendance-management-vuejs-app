@@ -48,5 +48,7 @@
   "Login": "Login",
   "Register": "Register",
   "Password": "Password",
-  "Repeat Password": "Repeat Password"
+  "Repeat Password": "Repeat Password",
+  "Attend In": "Attend In",
+  "Attend Out": "Attend Out"
 }

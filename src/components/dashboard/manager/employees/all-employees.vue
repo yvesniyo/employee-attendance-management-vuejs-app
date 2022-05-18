@@ -41,8 +41,28 @@
             </el-table-column>
             <el-table-column prop="dob" label="Dob" width="120">
             </el-table-column>
-            <el-table-column fixed="right" label="Operations" width="150">
+            <el-table-column fixed="right" label="Operations" width="250">
               <template slot-scope="scope">
+                <el-button
+                  size="mini"
+                  type="warning"
+                  @click="markAttendance(scope.row.id)"
+                  v-if="scope.row.today_attendance == null"
+                >
+                  {{ $t("Attend In") }}
+                </el-button>
+                <el-button
+                  type="warning"
+                  size="mini"
+                  @click="markAttendance(scope.row.id)"
+                  v-if="
+                    scope.row.today_attendance != null &&
+                    scope.row.today_attendance.left_at == null
+                  "
+                >
+                  {{ $t("Attend Out") }}
+                </el-button>
+
                 <el-button
                   size="mini"
                   @click="handleEdit(scope.$index, scope.row)"
@@ -85,15 +105,15 @@ export default {
   name: "all-employees",
   computed: {
     ...mapGetters({
-      employees: "employees/employees"
-    })
+      employees: "employees/employees",
+    }),
   },
   watch: {
-    searchText: debounce(function(newVal) {
+    searchText: debounce(function (newVal) {
       this.query.search = newVal;
       this.query.page = 0;
       this.searchInputChanged();
-    }, 1000)
+    }, 1000),
   },
   data: () => {
     return {
@@ -103,10 +123,10 @@ export default {
         search: "",
         limit: 10,
         page: 1,
-        reload: false
+        reload: false,
       },
       loadingEmployees: false,
-      noMoreEmployees: false
+      noMoreEmployees: false,
     };
   },
   created() {
@@ -115,15 +135,45 @@ export default {
       this.newEmployeeCreated();
     });
 
-    bus.$on("new-attendance-recorded", data => {
+    bus.$on("new-attendance-recorded", (data) => {
       this.newAttendanceRecord(data);
     });
   },
   methods: {
     ...mapActions({
       searchEmployees: "employees/search",
-      deleteEmployee: "employees/deleteEmployee"
+      deleteEmployee: "employees/deleteEmployee",
+      registerAttendance: "employees/markAttendance",
     }),
+    markAttendance(id) {
+      const loading = this.$loading({
+        lock: true,
+        text: "Loading",
+        spinner: "el-icon-loading",
+        background: "rgba(0, 0, 0, 0.7)",
+      });
+
+      const ctx = this;
+
+      this.registerAttendance({
+        employee_id: id,
+      })
+        .then((response) => {
+          loading.close();
+          bus.$emit("new-attendance-recorded", response.data);
+
+          const message = response.data.message;
+
+          this.$notify({
+            title: "Attendance",
+            message: message,
+            type: "success",
+          });
+        })
+        .catch((error) => {
+          loading.close();
+        });
+    },
     goToCreateEmployee() {
       console.log("");
       this.$router.push({ name: "create-employee" });
@@ -145,34 +195,34 @@ export default {
 
       this.query.reload = false;
     },
-    handleEdit: function(id, data) {
+    handleEdit: function (id, data) {
       this.$router.push({
         name: "update-employee",
-        params: { employee_id: data.id }
+        params: { employee_id: data.id },
       });
     },
-    handleDelete: function(id, data) {
+    handleDelete: function (id, data) {
       bus.$emit("show-ajax-loader");
       this.deleteEmployee(data.code)
-        .then(response => {
+        .then((response) => {
           const data = response.data;
           this.searchInputChanged();
           bus.$emit("hide-ajax-loader");
         })
-        .catch(error => {
+        .catch((error) => {
           bus.$emit("hide-ajax-loader");
         });
     },
-    goToNextPage: function(data) {
+    goToNextPage: function (data) {
       this.loadPage(data);
     },
-    goToPrevPage: function(data) {
+    goToPrevPage: function (data) {
       this.loadPage(data);
     },
-    goToCurrentPage: function(data) {
+    goToCurrentPage: function (data) {
       this.loadPage(data);
     },
-    loadPage: function(page) {
+    loadPage: function (page) {
       this.query.page = page;
       this.searchInputChanged();
     },
@@ -180,7 +230,7 @@ export default {
       this.loadingEmployees = true;
       bus.$emit("show-ajax-loader");
       this.searchEmployees(this.query)
-        .then(response => {
+        .then((response) => {
           this.loadingEmployees = false;
           const data = response.data;
           if (data.current_page == data.last_page) {
@@ -190,12 +240,12 @@ export default {
           }
           bus.$emit("hide-ajax-loader");
         })
-        .catch(error => {
+        .catch((error) => {
           this.loadingEmployees = false;
           bus.$emit("hide-ajax-loader");
         });
-    }
-  }
+    },
+  },
 };
 </script>
 

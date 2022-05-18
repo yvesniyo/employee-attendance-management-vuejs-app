@@ -6,7 +6,7 @@ export default {
 
   state: {
     employees: [],
-    currentEmployee: {}
+    currentEmployee: {},
   },
 
   getters: {
@@ -15,7 +15,7 @@ export default {
     },
     currentEmployee(state) {
       return state.currentEmployee;
-    }
+    },
   },
 
   mutations: {
@@ -27,18 +27,18 @@ export default {
     },
     SET_CURRENT_EMPLOYEE(state, value) {
       state.currentEmployee = value;
-    }
+    },
   },
 
   actions: {
     async getEmployee({ commit, dispatch }, employee_id) {
       return new Promise((resolve, reject) => {
         EmployeeService.ViewEmployee(employee_id)
-          .then(response => {
+          .then((response) => {
             commit("SET_CURRENT_EMPLOYEE", response.data.data);
             resolve(response);
           })
-          .catch(error => {
+          .catch((error) => {
             commit("SET_CURRENT_EMPLOYEE", {});
             reject(error);
           });
@@ -48,10 +48,10 @@ export default {
     async createEmployee({ commit, dispatch }, data) {
       return new Promise((resolve, reject) => {
         EmployeeService.CreateEmployee(data)
-          .then(response => {
+          .then((response) => {
             resolve(response);
           })
-          .catch(error => {
+          .catch((error) => {
             reject(error);
           });
       });
@@ -60,10 +60,10 @@ export default {
     async updateEmployee({ commit, dispatch }, data) {
       return new Promise((resolve, reject) => {
         EmployeeService.UpdateEmployee(data)
-          .then(response => {
+          .then((response) => {
             resolve(response);
           })
-          .catch(error => {
+          .catch((error) => {
             reject(error);
           });
       });
@@ -72,10 +72,10 @@ export default {
     async deleteEmployee({ commit }, employee_code) {
       return new Promise((resolve, reject) => {
         EmployeeService.DeleteEmployee(employee_code)
-          .then(response => {
+          .then((response) => {
             resolve(response);
           })
-          .catch(error => {
+          .catch((error) => {
             reject(error);
           });
       });
@@ -84,10 +84,10 @@ export default {
     async markAttendance({ commit }, data) {
       return new Promise((resolve, reject) => {
         EmployeeService.MarkAttendace(data)
-          .then(response => {
+          .then((response) => {
             resolve(response);
           })
-          .catch(error => {
+          .catch((error) => {
             reject(error);
           });
       });
@@ -96,11 +96,11 @@ export default {
     async employees({ commit }) {
       return new Promise((resolve, reject) => {
         EmployeeService.Employees()
-          .then(response => {
+          .then((response) => {
             commit("SET_EMPLOYEES", response.data);
             resolve(response);
           })
-          .catch(error => {
+          .catch((error) => {
             commit("SET_EMPLOYEES", []);
             reject(error);
           });
@@ -112,19 +112,18 @@ export default {
       query += "&limit=" + data.limit;
       query += "&page=" + data.page;
 
-      console.log(data);
       return new Promise((resolve, reject) => {
         EmployeeService.SearchEmployees(query)
-          .then(response => {
+          .then((response) => {
             commit("SET_EMPLOYEES", response.data);
 
             resolve(response);
           })
-          .catch(error => {
+          .catch((error) => {
             commit("SET_EMPLOYEES", []);
             reject(error);
           });
       });
-    }
-  }
+    },
+  },
 };
