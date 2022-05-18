@@ -47,6 +47,7 @@
 <script>
 import { bus } from "@/plugins/bus.js";
 import { mapGetters, mapActions } from "vuex";
+import * as XLSX from "xlsx";
 
 export default {
   name: "attendance",
@@ -55,12 +56,12 @@ export default {
     ...mapGetters({
       authenticated: "auth/authenticated",
       user: "auth/user",
-      attendances: "attendance/attendances"
-    })
+      attendances: "attendance/attendances",
+    }),
   },
   data: () => {
     return {
-      dateRangeAttendance: [new Date(), new Date()]
+      dateRangeAttendance: [new Date(), new Date()],
     };
   },
   mounted() {
@@ -76,9 +77,9 @@ export default {
   methods: {
     ...mapActions({
       fetchAttendance: "attendance/fetchAttendances",
-      exportAttendanceRequest: "attendance/exportAttendances"
+      exportAttendanceRequest: "attendance/exportAttendances",
     }),
-    exportAttendance: function() {
+    exportAttendance: function () {
       const from = new Date(Date.parse(this.dateRangeAttendance[0]))
         .toISOString()
         .slice(0, 10);
@@ -86,9 +87,64 @@ export default {
         .toISOString()
         .slice(0, 10);
       bus.$emit("show-ajax-loader");
+
+      const ctx = this;
+
       this.exportAttendanceRequest({
         from,
-        to
+        to,
+      })
+        .then((data) => {
+          const link = data.link;
+
+          ctx.readExcelLink(link);
+
+          bus.$emit("hide-ajax-loader");
+        })
+        .catch(() => {
+          bus.$emit("hide-ajax-loader");
+        });
+    },
+    readExcelLink: async (link) => {
+      const a = document.createElement("a");
+      a.setAttribute("href", link);
+      a.click();
+
+      const workbook = XLSX.read(await (await fetch(link)).arrayBuffer(), {
+        WTF: 1,
+      });
+
+      const wsname = workbook.SheetNames[0];
+      const ws = XLSX.utils.sheet_to_json(workbook.Sheets[wsname], {
+        header: 1,
+      });
+
+      const html = XLSX.utils.sheet_to_html(workbook.Sheets[wsname], {
+        header: 1,
+      });
+
+      const excellist = [];
+      for (var i = 0; i < ws.length; i++) {
+        excellist.push(ws[i]);
+      }
+
+      const columns = ws[0].map((r) => ({ key: r, name: r }));
+      const rows = ws.slice(1).map((r) =>
+        r.reduce((acc, x, i) => {
+          acc[ws[0][i]] = x;
+          return acc;
+        }, {})
+      );
+    },
+    dateRangeAttendanceChanged: function async(date) {
+      const from = new Date(Date.parse(date[0])).toISOString().slice(0, 10);
+      const to = new Date(Date.parse(date[1])).toISOString().slice(0, 10);
+
+      bus.$emit("show-ajax-loader");
+
+      this.fetchAttendance({
+        from,
+        to,
       })
         .then(() => {
           bus.$emit("hide-ajax-loader");
@@ -97,22 +153,7 @@ export default {
           bus.$emit("hide-ajax-loader");
         });
     },
-    dateRangeAttendanceChanged: function async(date) {
-      const from = new Date(Date.parse(date[0])).toISOString().slice(0, 10);
-      const to = new Date(Date.parse(date[1])).toISOString().slice(0, 10);
-      bus.$emit("show-ajax-loader");
-      this.fetchAttendance({
-        from,
-        to
-      })
-        .then(() => {
-          bus.$emit("hide-ajax-loader");
-        })
-        .catch(() => {
-          bus.$emit("hide-ajax-loader");
-        });
-    }
-  }
+  },
 };
 </script>
 <style lang="scss" scoped>

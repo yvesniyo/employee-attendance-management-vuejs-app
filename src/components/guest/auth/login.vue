@@ -79,16 +79,16 @@ export default {
   data: () => ({
     form: {
       password: "",
-      email: ""
+      email: "",
     },
     valid: {
       email: null,
-      password: null
+      password: null,
     },
     userLoggedIn: false,
     sending: false,
     formSubmitResponseMessage: "",
-    formSubmitResponseStatus: false
+    formSubmitResponseStatus: false,
   }),
   async created() {
     const user = await this.getUserProfile();
@@ -102,18 +102,18 @@ export default {
   methods: {
     ...mapActions({
       signIn: "auth/signIn",
-      myProfile: "auth/me"
+      myProfile: "auth/me",
     }),
     ...mapGetters({
-      getUserProfile: "auth/user"
+      getUserProfile: "auth/user",
     }),
     clearForm() {
       this.form.password = null;
       this.form.email = null;
     },
-    clearLastErrors: function() {
+    clearLastErrors: function () {
       const ctx = this;
-      Object.keys(this.valid).forEach(function(key) {
+      Object.keys(this.valid).forEach(function (key) {
         ctx.$set(ctx.valid, key, null);
       });
     },
@@ -124,8 +124,7 @@ export default {
       const ctx = this;
 
       this.signIn(this.form)
-        .then(data => {
-          console.log(data.data);
+        .then((data) => {
           ctx.sending = false;
           bus.$emit("hide-ajax-loader");
           ctx.formSubmitResponseMessage = data.data.message;
@@ -135,14 +134,14 @@ export default {
             ctx.$router.replace({ name: "dashboard" });
           }, 200);
         })
-        .catch(error => {
+        .catch((error) => {
           ctx.sending = false;
           bus.$emit("hide-ajax-loader");
 
           if (error.response.status == 422) {
             ctx.formSubmitResponseMessage = error.response.data.message;
             ctx.formSubmitResponseStatus = true;
-            Object.keys(error.response.data.errors).forEach(function(key) {
+            Object.keys(error.response.data.errors).forEach(function (key) {
               ctx.$set(ctx.valid, key, error.response.data.errors[key][0]);
             });
           } else if (error.response.status == 401) {
@@ -153,8 +152,8 @@ export default {
             ctx.formSubmitResponseStatus = true;
           }
         });
-    }
-  }
+    },
+  },
 };
 </script>
 

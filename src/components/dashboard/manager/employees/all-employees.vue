@@ -31,7 +31,11 @@
     <div class="col-12">
       <div class="row">
         <div class="col-md-12">
-          <el-table :data="employees.data" style="width: 100%">
+          <el-table
+            :data="employees.data"
+            v-loading="loadingEmployees"
+            style="width: 100%"
+          >
             <el-table-column fixed prop="code" label="code" width="150">
             </el-table-column>
             <el-table-column prop="name" label="Name"> </el-table-column>
@@ -94,10 +98,8 @@
 </template>
 
 <script>
-import EmployeesListTemplate from "./employees-list-template.vue";
 import { mapGetters, mapActions } from "vuex";
 import { debounce } from "../../../../plugins/debounce";
-import CreateEmployee from "./create-employee.vue";
 import { bus } from "../../../../plugins/bus";
 
 export default {
