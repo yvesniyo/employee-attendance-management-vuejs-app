@@ -40,6 +40,23 @@
           </el-card>
         </el-timeline-item>
       </el-timeline>
+      <vue-html2pdf
+        :show-layout="false"
+        :float-layout="true"
+        :enable-download="true"
+        :preview-modal="true"
+        :paginate-elements-by-height="1400"
+        filename="attendance_report.pdf"
+        :pdf-quality="2"
+        :manual-pagination="false"
+        pdf-format="a4"
+        :pdf-margin="10"
+        pdf-orientation="portrait"
+        pdf-content-width="800px"
+        ref="html2Pdf"
+      >
+        <section slot="pdf-content" ref="html2Pdf_content"></section>
+      </vue-html2pdf>
     </div>
   </div>
 </template>
@@ -48,10 +65,13 @@
 import { bus } from "@/plugins/bus.js";
 import { mapGetters, mapActions } from "vuex";
 import * as XLSX from "xlsx";
+import VueHtml2pdf from "vue-html2pdf";
 
 export default {
   name: "attendance",
-  components: {},
+  components: {
+    VueHtml2pdf,
+  },
   computed: {
     ...mapGetters({
       authenticated: "auth/authenticated",
@@ -79,6 +99,9 @@ export default {
       fetchAttendance: "attendance/fetchAttendances",
       exportAttendanceRequest: "attendance/exportAttendances",
     }),
+    generatePDF() {
+      this.$refs.html2Pdf.generatePdf();
+    },
     exportAttendance: function () {
       const from = new Date(Date.parse(this.dateRangeAttendance[0]))
         .toISOString()
@@ -105,7 +128,7 @@ export default {
           bus.$emit("hide-ajax-loader");
         });
     },
-    readExcelLink: async (link) => {
+    readExcelLink: async function (link) {
       const a = document.createElement("a");
       a.setAttribute("href", link);
       a.click();
@@ -122,6 +145,12 @@ export default {
       const html = XLSX.utils.sheet_to_html(workbook.Sheets[wsname], {
         header: 1,
       });
+
+      this.$refs.html2Pdf_content.innerHTML = html;
+
+      setTimeout(() => {
+        this.generatePDF();
+      }, 2000);
 
       const excellist = [];
       for (var i = 0; i < ws.length; i++) {
