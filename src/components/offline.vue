@@ -4,7 +4,7 @@
 
 <script>
 export default {
-  name: "offline",
+  name: "offline"
 };
 </script>
 

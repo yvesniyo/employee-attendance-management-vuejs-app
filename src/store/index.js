@@ -15,6 +15,6 @@ export default new Vuex.Store({
     auth,
     managerDashboard,
     employees,
-    attendance,
-  },
+    attendance
+  }
 });

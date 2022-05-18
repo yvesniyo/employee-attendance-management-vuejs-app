@@ -50,15 +50,15 @@ export default {
   name: "forget-password",
   data: () => ({
     form: {
-      email: "",
+      email: ""
     },
     valid: {
-      email: null,
+      email: null
     },
     userLoggedIn: false,
     sending: false,
     formSubmitResponseMessage: "",
-    formSubmitResponseStatus: false,
+    formSubmitResponseStatus: false
   }),
   async created() {
     const user = await this.getUserProfile();
@@ -72,17 +72,17 @@ export default {
   methods: {
     ...mapActions({
       sendResetLink: "auth/sendResetLink",
-      myProfile: "auth/me",
+      myProfile: "auth/me"
     }),
     ...mapGetters({
-      getUserProfile: "auth/user",
+      getUserProfile: "auth/user"
     }),
     clearForm() {
       this.form.email = null;
     },
-    clearLastErrors: function () {
+    clearLastErrors: function() {
       const ctx = this;
-      Object.keys(this.valid).forEach(function (key) {
+      Object.keys(this.valid).forEach(function(key) {
         ctx.$set(ctx.valid, key, null);
       });
     },
@@ -93,7 +93,7 @@ export default {
       const ctx = this;
 
       this.sendResetLink(this.form)
-        .then((data) => {
+        .then(data => {
           console.log(data.data);
           ctx.sending = false;
           bus.$emit("hide-ajax-loader");
@@ -102,13 +102,13 @@ export default {
 
           setTimeout(() => this.$router.replace({ name: "login" }), 4000);
         })
-        .catch((error) => {
+        .catch(error => {
           ctx.sending = false;
           bus.$emit("hide-ajax-loader");
           if (error.response.status == 422) {
             ctx.formSubmitResponseMessage = error.response.data.message;
             ctx.formSubmitResponseStatus = true;
-            Object.keys(error.response.data.errors).forEach(function (key) {
+            Object.keys(error.response.data.errors).forEach(function(key) {
               ctx.$set(ctx.valid, key, error.response.data.errors[key][0]);
             });
           } else if (error.response.status == 500) {
@@ -116,8 +116,8 @@ export default {
             ctx.formSubmitResponseStatus = true;
           }
         });
-    },
-  },
+    }
+  }
 };
 </script>
 

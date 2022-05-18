@@ -79,13 +79,13 @@ export default {
   components: { AjaxLoader },
   name: "dashboard",
   data: () => ({
-    menuVisible: false,
+    menuVisible: false
   }),
   computed: {
     ...mapGetters({
       authenticated: "auth/authenticated",
-      user: "auth/user",
-    }),
+      user: "auth/user"
+    })
   },
   mounted() {
     // if (this.authenticated) {
@@ -93,33 +93,33 @@ export default {
   },
   methods: {
     ...mapActions({
-      signOut: "auth/signOut",
+      signOut: "auth/signOut"
     }),
-    logout: function () {
+    logout: function() {
       const loading = this.$loading({
         lock: true,
         text: this.$t("Logging out..."),
         spinner: "el-icon-loading",
-        background: "rgba(0, 0, 0, 0.7)",
+        background: "rgba(0, 0, 0, 0.7)"
       });
 
       this.signOut()
-        .then((data) => {
+        .then(data => {
           loading.close();
           this.$router.replace({ name: "login-register" });
         })
-        .catch((error) => {
+        .catch(error => {
           loading.close();
         });
-    },
+    }
   },
   created() {
     if (!this.authenticated) {
       this.$router.replace({
-        name: "login",
+        name: "login"
       });
     }
-  },
+  }
 };
 </script>
 

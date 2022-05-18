@@ -37,7 +37,7 @@ import {
   Tag,
   Table,
   TableColumn,
-  Pagination,
+  Pagination
 } from "element-ui";
 import { bus } from "./plugins/bus";
 import "./registerServiceWorker";
@@ -98,8 +98,8 @@ Vue.mixin({
     moneyFormat: function(x) {
       if (!x) return "0";
       return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    },
-  },
+    }
+  }
 });
 
 store
@@ -107,7 +107,7 @@ store
   .then(() => {
     initApp();
   })
-  .catch((error) => {
+  .catch(error => {
     initApp();
   });
 
@@ -141,7 +141,7 @@ function initApp() {
             this.$notify({
               title: "Error!",
               message: error.response.data.message,
-              type: "error",
+              type: "error"
             });
 
             this.$router.push({ name: "login-register" });
@@ -155,7 +155,7 @@ function initApp() {
           this.$notify({
             title: "Offline",
             message: error.response.data.message,
-            type: "warning",
+            type: "warning"
           });
 
           router.push({ name: "offline" });
@@ -165,13 +165,13 @@ function initApp() {
           this.$notify({
             title: "Error",
             message: error.response.data.message,
-            type: "error",
+            type: "error"
           });
 
           return Promise.reject(error);
         }
-      },
+      }
     },
-    render: (h) => h(App),
+    render: h => h(App)
   }).$mount("#app");
 }

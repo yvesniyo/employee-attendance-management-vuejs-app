@@ -8,13 +8,13 @@ export default [
   {
     path: "/",
     name: "home",
-    component: LoginRegister,
+    component: LoginRegister
   },
   {
     path: "/about",
     name: "About",
     component: () =>
-      import(/* webpackChunkName: "about" */ "../components/guest/about.vue"),
+      import(/* webpackChunkName: "about" */ "../components/guest/about.vue")
   },
 
   {
@@ -23,26 +23,26 @@ export default [
     component: () =>
       import(
         /* webpackChunkName: "contact" */ "../components/guest/contact.vue"
-      ),
+      )
   },
   {
     path: "/login-register",
     name: "login-register",
-    component: LoginRegister,
+    component: LoginRegister
   },
   {
     path: "/login",
     name: "login",
-    component: Login,
+    component: Login
   },
   {
     path: "/register/:phone",
     name: "register",
-    component: Register,
+    component: Register
   },
   {
     path: "/forget-password/",
     name: "forget-password",
-    component: ForgetPassword,
-  },
+    component: ForgetPassword
+  }
 ];

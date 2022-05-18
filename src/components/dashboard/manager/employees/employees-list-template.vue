@@ -44,7 +44,7 @@
                 @click="markAttendance(employee.id)"
                 v-if="
                   employee.today_attendance != null &&
-                  employee.today_attendance.left_at == null
+                    employee.today_attendance.left_at == null
                 "
                 class="md-accent md-raised w-100"
               >
@@ -70,13 +70,13 @@ export default {
   computed: {
     disabled() {
       return this.loading || this.noMore;
-    },
+    }
   },
   methods: {
     ...mapActions({
-      registerAttendance: "employees/markAttendance",
+      registerAttendance: "employees/markAttendance"
     }),
-    openParticipant: function (id) {
+    openParticipant: function(id) {
       // this.$router.push({
       //   name: "view-employe",
       //   params: {
@@ -89,15 +89,15 @@ export default {
         lock: true,
         text: "Loading",
         spinner: "el-icon-loading",
-        background: "rgba(0, 0, 0, 0.7)",
+        background: "rgba(0, 0, 0, 0.7)"
       });
 
       const ctx = this;
 
       this.registerAttendance({
-        employee_id: id,
+        employee_id: id
       })
-        .then((response) => {
+        .then(response => {
           loading.close();
           bus.$emit("new-attendance-recorded", response.data);
 
@@ -106,17 +106,17 @@ export default {
           this.$notify({
             title: "Attendance",
             message: message,
-            type: "success",
+            type: "success"
           });
         })
-        .catch((error) => {
+        .catch(error => {
           loading.close();
         });
     },
     load() {
       this.$emit("load");
-    },
-  },
+    }
+  }
 };
 </script>
 

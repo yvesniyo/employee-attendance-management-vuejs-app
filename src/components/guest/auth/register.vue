@@ -141,7 +141,7 @@ export default {
       national_id: "",
       password: "",
       email: "",
-      repeat_password: "",
+      repeat_password: ""
     },
     valid: {
       name: "",
@@ -149,18 +149,18 @@ export default {
       national_id: "",
       email: null,
       password: null,
-      repeat_password: null,
+      repeat_password: null
     },
     userLoggedIn: false,
     sending: false,
     formSubmitResponseMessage: "",
-    formSubmitResponseStatus: false,
+    formSubmitResponseStatus: false
   }),
   created() {},
 
   methods: {
     ...mapActions({
-      register: "auth/register",
+      register: "auth/register"
     }),
     clearForm() {
       this.form.password = null;
@@ -169,9 +169,9 @@ export default {
       this.form.name = null;
       this.form.dob = null;
     },
-    clearLastErrors: function () {
+    clearLastErrors: function() {
       const ctx = this;
-      Object.keys(this.valid).forEach(function (key) {
+      Object.keys(this.valid).forEach(function(key) {
         ctx.$set(ctx.valid, key, null);
       });
     },
@@ -182,13 +182,13 @@ export default {
         lock: true,
         text: "Loading",
         spinner: "el-icon-loading",
-        background: "rgba(0, 0, 0, 0.7)",
+        background: "rgba(0, 0, 0, 0.7)"
       });
 
       const ctx = this;
 
       this.register(this.form)
-        .then((data) => {
+        .then(data => {
           ctx.sending = false;
           loading.close();
 
@@ -197,7 +197,7 @@ export default {
 
           setTimeout(() => this.$router.push({ name: "dashboard" }), 5000);
         })
-        .catch((error) => {
+        .catch(error => {
           ctx.sending = false;
           loading.close();
 
@@ -205,7 +205,7 @@ export default {
             ctx.formSubmitResponseMessage =
               error.response.data.message ?? "Invalid data";
             ctx.formSubmitResponseStatus = true;
-            Object.keys(error.response.data.errors).forEach(function (key) {
+            Object.keys(error.response.data.errors).forEach(function(key) {
               ctx.$set(ctx.valid, key, error.response.data.errors[key][0]);
             });
           } else if (error.response.status == 500) {
@@ -213,8 +213,8 @@ export default {
             ctx.formSubmitResponseStatus = true;
           }
         });
-    },
-  },
+    }
+  }
 };
 </script>
 

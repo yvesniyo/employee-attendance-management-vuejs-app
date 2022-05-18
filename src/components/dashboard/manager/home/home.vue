@@ -91,13 +91,13 @@ export default {
     ...mapGetters({
       authenticated: "auth/authenticated",
       user: "auth/user",
-      overview: "managerDashboard/overview",
+      overview: "managerDashboard/overview"
     }),
-    userLastName: function () {
+    userLastName: function() {
       if (!this.user.name) return this.user.name;
       const array_names = this.user.name.split(" ");
       return array_names[array_names.length - 1];
-    },
+    }
   },
   data: () => {
     return {};
@@ -115,14 +115,14 @@ export default {
 
   methods: {
     ...mapActions({
-      getManagerOverview: "managerDashboard/getDashboardData",
+      getManagerOverview: "managerDashboard/getDashboardData"
     }),
 
     getDateToday() {
       const today = new Date();
       return today.toDateString();
-    },
-  },
+    }
+  }
 };
 </script>
 

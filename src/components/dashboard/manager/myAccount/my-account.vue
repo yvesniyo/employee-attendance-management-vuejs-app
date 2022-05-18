@@ -75,8 +75,8 @@ export default {
   components: {},
   computed: {
     ...mapGetters({
-      user: "auth/user",
-    }),
+      user: "auth/user"
+    })
   },
   created() {
     // bus.$emit("show-ajax-loader");
@@ -85,26 +85,26 @@ export default {
   methods: {
     ...mapActions({
       getNewCode: "auth/getNewCode",
-      signOut: "auth/signOut",
+      signOut: "auth/signOut"
     }),
     generateNewCode() {
       bus.$emit("show-ajax-loader");
       this.getNewCode()
-        .then((response) => {
+        .then(response => {
           bus.$emit("hide-ajax-loader");
         })
-        .catch((error) => {
+        .catch(error => {
           bus.$emit("hide-ajax-loader");
         });
     },
     logout() {
       this.signOut()
-        .then((data) => {
+        .then(data => {
           this.$router.replace({ name: "login-register" });
         })
-        .catch((error) => {});
-    },
-  },
+        .catch(error => {});
+    }
+  }
 };
 </script>
 

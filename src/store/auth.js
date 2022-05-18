@@ -8,7 +8,7 @@ export default {
   state: {
     authenticated: false,
     user: null,
-    token: null,
+    token: null
   },
 
   getters: {
@@ -18,7 +18,7 @@ export default {
 
     user(state) {
       return state.user;
-    },
+    }
   },
 
   mutations: {
@@ -33,7 +33,7 @@ export default {
       } catch (error) {
         delete error.message;
       }
-    },
+    }
   },
 
   actions: {
@@ -41,16 +41,16 @@ export default {
       return new Promise((resolve, reject) => {
         axios
           .post("api/v1/auth/requestResetLink", data)
-          .then((response) => {
+          .then(response => {
             resolve(response);
           })
-          .catch((error) => reject(error));
+          .catch(error => reject(error));
       });
     },
     async signIn({ dispatch, commit }, credentials) {
       return new Promise((resolve, reject) => {
         AuthService.Login(credentials)
-          .then((response) => {
+          .then(response => {
             commit("SET_AUTHENTICATED", true);
             const data = response.data.data;
             commit("SET_USER", data);
@@ -59,7 +59,7 @@ export default {
             reloadApiToken();
             resolve(response);
           })
-          .catch((error) => {
+          .catch(error => {
             dispatch("me");
             reloadApiToken();
             reject(error);
@@ -77,7 +77,7 @@ export default {
       commit("SET_AUTHENTICATED", false);
       commit("SET_USER", {
         user: null,
-        token: null,
+        token: null
       });
       localStorage.setItem("currentUser", null);
       reloadApiToken();
@@ -93,16 +93,16 @@ export default {
     async me({ commit }) {
       return new Promise((resolve, reject) => {
         AuthService.Me()
-          .then((response) => {
+          .then(response => {
             commit("SET_AUTHENTICATED", true);
             commit("SET_USER", {
               user: response.data,
-              token: localStorage.getItem("member_token"),
+              token: localStorage.getItem("member_token")
             });
             reloadApiToken();
             resolve(response);
           })
-          .catch((error) => {
+          .catch(error => {
             commit("SET_AUTHENTICATED", false);
             commit("SET_USER", null);
             localStorage.setItem("currentUser", null);
@@ -111,6 +111,6 @@ export default {
             reject(error);
           });
       });
-    },
-  },
+    }
+  }
 };

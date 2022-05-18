@@ -25,7 +25,7 @@ export default {
   },
 
   actions: {
-    async getDashboardData({ dispatch, commit }) {
+    async getDashboardData({ commit }) {
       return new Promise((resolve, reject) => {
         axios
           .get("/api/v1/overview")

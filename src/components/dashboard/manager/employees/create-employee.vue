@@ -91,7 +91,7 @@
         <md-field
           :class="{
             'md-invalid': valid.employee.status,
-            'block-content': true,
+            'block-content': true
           }"
         >
           <span for="status" style="text-align: left" class="block">{{
@@ -119,7 +119,7 @@
         <md-field
           :class="{
             'md-invalid': valid.employee.position,
-            'block-content': true,
+            'block-content': true
           }"
         >
           <span for="position" style="text-align: left" class="block">{{
@@ -174,30 +174,30 @@ export default {
       selectStatusOptions: [
         {
           value: "ACTIVE",
-          label: "ACTIVE",
+          label: "ACTIVE"
         },
         {
           value: "INACTIVE",
-          label: "INACTIVE",
-        },
+          label: "INACTIVE"
+        }
       ],
       selectPositionOptions: [
         {
           value: "MANAGER",
-          label: "MANAGER",
+          label: "MANAGER"
         },
         {
           value: "TESTER",
-          label: "TESTER",
+          label: "TESTER"
         },
         {
           value: "DESIGNER",
-          label: "DESIGNER",
+          label: "DESIGNER"
         },
         {
           value: "DEVOPS",
-          label: "DEVOPS",
-        },
+          label: "DEVOPS"
+        }
       ],
       employee: {
         name: "",
@@ -206,8 +206,8 @@ export default {
         national_id: "",
         dob: "",
         position: "TESTER",
-        status: "ACTIVE",
-      },
+        status: "ACTIVE"
+      }
     },
 
     sending: false,
@@ -223,15 +223,15 @@ export default {
         national_id: null,
         dob: null,
         position: "",
-        status: "",
-      },
-    },
+        status: ""
+      }
+    }
   }),
   methods: {
     ...mapActions({
-      createEmployee: "employees/createEmployee",
+      createEmployee: "employees/createEmployee"
     }),
-    saveEmployee: function () {
+    saveEmployee: function() {
       this.sending = true;
       this.lastEmployee = this.form.employee.name;
       this.employeeCreateResponse = null;
@@ -241,7 +241,7 @@ export default {
 
       const ctx = this;
       this.createEmployee(this.form.employee)
-        .then((response) => {
+        .then(response => {
           ctx.sending = false;
           ctx.employeeSaved = true;
           ctx.formSubmitResponse = true;
@@ -253,7 +253,7 @@ export default {
 
           ctx.$router.push({ name: "all-employees" });
         })
-        .catch(function (error) {
+        .catch(function(error) {
           bus.$emit("hide-ajax-loader");
           ctx.sending = false;
           ctx.employeeSaved = false;
@@ -262,7 +262,7 @@ export default {
             let message = error.response.data.message;
             ctx.employeeCreateResponse = message;
             ctx.formSubmitResponse = true;
-            Object.keys(errors).forEach(function (key) {
+            Object.keys(errors).forEach(function(key) {
               ctx.$set(ctx.valid.employee, key, errors[key][0]);
             });
           } else if (error.response.status == 500) {
@@ -272,13 +272,13 @@ export default {
           }
         });
     },
-    clearLastErrors: function () {
+    clearLastErrors: function() {
       const ctx = this;
-      Object.keys(this.valid.employee).forEach(function (key) {
+      Object.keys(this.valid.employee).forEach(function(key) {
         ctx.$set(ctx.valid.employee, key, null);
       });
     },
-    clearForm: function () {
+    clearForm: function() {
       this.form.employee = {
         name: "",
         email: "",
@@ -286,7 +286,7 @@ export default {
         national_id: "",
         dob: "",
         position: "TESTER",
-        status: "ACTIVE",
+        status: "ACTIVE"
       };
       this.valid = {
         employee: {
@@ -296,17 +296,17 @@ export default {
           national_id: null,
           dob: null,
           position: "",
-          status: "",
-        },
+          status: ""
+        }
       };
     },
-    initDateValues: function () {},
+    initDateValues: function() {}
   },
 
   created() {
     this.$material.locale.dateFormat = "yyyy-MM-dd";
     this.initDateValues();
-  },
+  }
 };
 </script>
 

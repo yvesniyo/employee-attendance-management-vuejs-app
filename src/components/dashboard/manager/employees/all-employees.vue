@@ -85,15 +85,15 @@ export default {
   name: "all-employees",
   computed: {
     ...mapGetters({
-      employees: "employees/employees",
-    }),
+      employees: "employees/employees"
+    })
   },
   watch: {
-    searchText: debounce(function (newVal) {
+    searchText: debounce(function(newVal) {
       this.query.search = newVal;
       this.query.page = 0;
       this.searchInputChanged();
-    }, 1000),
+    }, 1000)
   },
   data: () => {
     return {
@@ -103,10 +103,10 @@ export default {
         search: "",
         limit: 10,
         page: 1,
-        reload: false,
+        reload: false
       },
       loadingEmployees: false,
-      noMoreEmployees: false,
+      noMoreEmployees: false
     };
   },
   created() {
@@ -115,14 +115,14 @@ export default {
       this.newEmployeeCreated();
     });
 
-    bus.$on("new-attendance-recorded", (data) => {
+    bus.$on("new-attendance-recorded", data => {
       this.newAttendanceRecord(data);
     });
   },
   methods: {
     ...mapActions({
       searchEmployees: "employees/search",
-      deleteEmployee: "employees/deleteEmployee",
+      deleteEmployee: "employees/deleteEmployee"
     }),
     goToCreateEmployee() {
       console.log("");
@@ -145,34 +145,34 @@ export default {
 
       this.query.reload = false;
     },
-    handleEdit: function (id, data) {
+    handleEdit: function(id, data) {
       this.$router.push({
         name: "update-employee",
-        params: { employee_id: data.id },
+        params: { employee_id: data.id }
       });
     },
-    handleDelete: function (id, data) {
+    handleDelete: function(id, data) {
       bus.$emit("show-ajax-loader");
       this.deleteEmployee(data.code)
-        .then((response) => {
+        .then(response => {
           const data = response.data;
           this.searchInputChanged();
           bus.$emit("hide-ajax-loader");
         })
-        .catch((error) => {
+        .catch(error => {
           bus.$emit("hide-ajax-loader");
         });
     },
-    goToNextPage: function (data) {
+    goToNextPage: function(data) {
       this.loadPage(data);
     },
-    goToPrevPage: function (data) {
+    goToPrevPage: function(data) {
       this.loadPage(data);
     },
-    goToCurrentPage: function (data) {
+    goToCurrentPage: function(data) {
       this.loadPage(data);
     },
-    loadPage: function (page) {
+    loadPage: function(page) {
       this.query.page = page;
       this.searchInputChanged();
     },
@@ -180,7 +180,7 @@ export default {
       this.loadingEmployees = true;
       bus.$emit("show-ajax-loader");
       this.searchEmployees(this.query)
-        .then((response) => {
+        .then(response => {
           this.loadingEmployees = false;
           const data = response.data;
           if (data.current_page == data.last_page) {
@@ -190,12 +190,12 @@ export default {
           }
           bus.$emit("hide-ajax-loader");
         })
-        .catch((error) => {
+        .catch(error => {
           this.loadingEmployees = false;
           bus.$emit("hide-ajax-loader");
         });
-    },
-  },
+    }
+  }
 };
 </script>
 

@@ -16,18 +16,18 @@ routes.push(...employeeRouter);
 routes.push({
   path: "/offline",
   name: "offline",
-  component: Offline,
+  component: Offline
 });
 routes.push({
   path: "*",
   name: "not-found",
-  component: NotFound,
+  component: NotFound
 });
 
 const router = new VueRouter({
   mode: "history",
   base: process.env.BASE_URL,
-  routes,
+  routes
 });
 
 export default router;

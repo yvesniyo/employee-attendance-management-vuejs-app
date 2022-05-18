@@ -13,40 +13,40 @@ export default [
     children: [
       {
         path: "",
-        redirect: "home",
+        redirect: "home"
       },
       {
         path: "home",
         name: "dashboard",
-        component: DashboardHome,
+        component: DashboardHome
       },
       {
         path: "employees",
         name: "all-employees",
-        component: AllEmployees,
+        component: AllEmployees
       },
       {
         path: "employees/create",
         name: "create-employee",
-        component: CreateEmployee,
+        component: CreateEmployee
       },
       {
         path: "employees/:employee_id/update",
         name: "update-employee",
         component: UpdateEmployee,
-        props: true,
+        props: true
       },
       {
         path: "attendance",
         name: "attendance",
-        component: Attendance,
+        component: Attendance
       },
 
       {
         path: "my-account",
         name: "my-account",
-        component: MyAccount,
-      },
-    ],
-  },
+        component: MyAccount
+      }
+    ]
+  }
 ];

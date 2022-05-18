@@ -55,12 +55,12 @@ export default {
     ...mapGetters({
       authenticated: "auth/authenticated",
       user: "auth/user",
-      attendances: "attendance/attendances",
-    }),
+      attendances: "attendance/attendances"
+    })
   },
   data: () => {
     return {
-      dateRangeAttendance: [new Date(), new Date()],
+      dateRangeAttendance: [new Date(), new Date()]
     };
   },
   mounted() {
@@ -76,9 +76,9 @@ export default {
   methods: {
     ...mapActions({
       fetchAttendance: "attendance/fetchAttendances",
-      exportAttendanceRequest: "attendance/exportAttendances",
+      exportAttendanceRequest: "attendance/exportAttendances"
     }),
-    exportAttendance: function () {
+    exportAttendance: function() {
       const from = new Date(Date.parse(this.dateRangeAttendance[0]))
         .toISOString()
         .slice(0, 10);
@@ -88,7 +88,7 @@ export default {
       bus.$emit("show-ajax-loader");
       this.exportAttendanceRequest({
         from,
-        to,
+        to
       })
         .then(() => {
           bus.$emit("hide-ajax-loader");
@@ -103,7 +103,7 @@ export default {
       bus.$emit("show-ajax-loader");
       this.fetchAttendance({
         from,
-        to,
+        to
       })
         .then(() => {
           bus.$emit("hide-ajax-loader");
@@ -111,8 +111,8 @@ export default {
         .catch(() => {
           bus.$emit("hide-ajax-loader");
         });
-    },
-  },
+    }
+  }
 };
 </script>
 <style lang="scss" scoped>

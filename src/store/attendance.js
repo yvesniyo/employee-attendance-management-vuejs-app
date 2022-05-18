@@ -4,19 +4,19 @@ export default {
   namespaced: true,
 
   state: {
-    attendances: [],
+    attendances: []
   },
 
   getters: {
     attendances(state) {
       return state.attendances;
-    },
+    }
   },
 
   mutations: {
     SET_ATTENDANCES(state, value) {
       state.attendances = value;
-    },
+    }
   },
 
   actions: {
@@ -24,11 +24,11 @@ export default {
       return new Promise((resolve, reject) => {
         axios
           .get("api/v1/get-attendances?from=" + data.from + "&to=" + data.to)
-          .then((response) => {
+          .then(response => {
             commit("SET_ATTENDANCES", response.data.data);
             resolve(response);
           })
-          .catch((error) => {
+          .catch(error => {
             commit("SET_ATTENDANCES", []);
             reject(error);
           });
@@ -38,9 +38,9 @@ export default {
       return new Promise((resolve, reject) => {
         axios
           .get("api/v1/exportAttendance?from=" + data.from + "&to=" + data.to, {
-            responseType: "arraybuffer",
+            responseType: "arraybuffer"
           })
-          .then((response) => {
+          .then(response => {
             console.log(response);
 
             let blob = new Blob([response.data], { type: "application/pdf" }),
@@ -49,10 +49,10 @@ export default {
             window.open(url);
             resolve(response);
           })
-          .catch((error) => {
+          .catch(error => {
             reject(error);
           });
       });
-    },
-  },
+    }
+  }
 };
